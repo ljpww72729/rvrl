@@ -1,15 +1,15 @@
-package cc.lkme.rvrl;
+package com.ww.lp.rvrl_lib;
 
 /**
  * Created by LinkedME06 on 16/11/11.
  */
 
 public class LPRefreshLoadListener {
-    interface OnLoadMoreListener {
+    public interface OnLoadMoreListener {
         void onLoadMore();
     }
 
-    interface onRefreshListener {
+    public interface onRefreshListener {
         void onRefresh();
     }
 }

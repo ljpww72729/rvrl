@@ -9,8 +9,6 @@ import cc.lkme.rvrl.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         MainFragment mainFragment;
         FragmentManager fragmentManager = getSupportFragmentManager();
         mainFragment = (MainFragment) fragmentManager.findFragmentById(R.id.content_frag);
-        if (mainFragment == null){
+        if (mainFragment == null) {
             mainFragment = MainFragment.newInstance();
             fragmentManager.beginTransaction().add(R.id.content_frag, mainFragment).commit();
         }

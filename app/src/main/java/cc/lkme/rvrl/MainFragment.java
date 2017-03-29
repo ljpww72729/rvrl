@@ -1,16 +1,25 @@
 package cc.lkme.rvrl;
 
+import com.google.gson.Gson;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.ww.lp.rvrl_lib.LPConstants;
+import com.ww.lp.rvrl_lib.LPRecyclerViewAdapter;
+import com.ww.lp.rvrl_lib.LPRefreshLoadListener;
+import com.ww.lp.rvrl_lib.ScrollChildSwipeRefreshLayout;
+import com.ww.lp.rvrl_lib.SingleItemClickListener;
 
 import java.util.ArrayList;
 
@@ -22,9 +31,10 @@ import cc.lkme.rvrl.databinding.MainFragBinding;
 
 public class MainFragment extends Fragment {
     private LinearLayoutManager mLayoutManager;
-    private ArrayList<DataEntry> mRVData;
-    private LPRecyclerViewAdapter<DataEntry> lpRecyclerViewAdapter;
+    private ArrayList<ListDataEntry> mRVData;
+    private LPRecyclerViewAdapter<ListDataEntry> lpRecyclerViewAdapter;
     protected Handler handler;
+    private MainFragBinding binding;
 
     public static MainFragment newInstance() {
 
@@ -40,12 +50,12 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         handler = new Handler();
-        MainFragBinding binding = MainFragBinding.inflate(inflater, container, false);
-
+        binding = MainFragBinding.inflate(inflater, container, false);
         binding.lpRv.setHasFixedSize(true);
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         binding.lpRv.setLayoutManager(mLayoutManager);
         // Set up progress indicator
         final ScrollChildSwipeRefreshLayout swipeRefreshLayout = binding.lpScsr;
@@ -57,57 +67,26 @@ public class MainFragment extends Fragment {
         // Set the scrolling view in the custom SwipeRefreshLayout.
         swipeRefreshLayout.setScrollUpChild(binding.lpRv);
         // specify an adapter (see also next example)
-        loadData();
+        mRVData = new ArrayList<>();
 //        lpRecyclerViewAdapter = new LPRecyclerViewAdapter<>(mRVData, R.layout.recycler_view_item, BR.lp_rv_item);
-        lpRecyclerViewAdapter = new LPRecyclerViewAdapter<>(mRVData, R.layout.recycler_view_item, BR.lp_rv_item, swipeRefreshLayout, binding.lpRv);
+        lpRecyclerViewAdapter = new LPRecyclerViewAdapter<>(mRVData, R.layout.recycler_view_item, cc.lkme.rvrl.BR.lp_rv_item, swipeRefreshLayout, binding.lpRv);
+        lpRecyclerViewAdapter.setPageStartNum(0);
         lpRecyclerViewAdapter.setOnLoadMoreListener(new LPRefreshLoadListener.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
                 lpRecyclerViewAdapter.showLoadingMore(true);
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("lp_log", "onLoadMore: ");
-                        //   remove progress item
-                        lpRecyclerViewAdapter.showLoadingMore(false);
-                        //add items one by one
-                        int start = mRVData.size();
-                        for (int i = 0; i < 10; i++){
-                            DataEntry dataEntry = new DataEntry();
-                            dataEntry.setName("peng" + i);
-                            mRVData.add(dataEntry);
-                            lpRecyclerViewAdapter.notifyItemInserted(mRVData.size());
-                        }
-//                        lpRecyclerViewAdapter.notifyDataSetChanged();
-                        lpRecyclerViewAdapter.setLoadingMore(false);
-                        //or you can add all at once but do not forget to call mAdapter.notifyDataSetChanged();
-                    }
-                }, 2000);
-
+                loadData(lpRecyclerViewAdapter.getPageCurrentNum() + 1);
             }
         });
         lpRecyclerViewAdapter.setOnRefreshListener(new LPRefreshLoadListener.onRefreshListener() {
             @Override
             public void onRefresh() {
                 //数据刷新操作
-                mRVData.clear();
-                DataEntry dataEntry = new DataEntry();
-                dataEntry.setName("lp");
-                mRVData.add(dataEntry);
-                mRVData.add(dataEntry);
-                mRVData.add(dataEntry);
-                mRVData.add(dataEntry);
-                mRVData.add(dataEntry);
-                mRVData.add(dataEntry);
-                mRVData.add(dataEntry);
-                mRVData.add(dataEntry);
-                mRVData.add(dataEntry);
-                lpRecyclerViewAdapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
+                loadData(lpRecyclerViewAdapter.getPageStartNum());
             }
         });
-
         binding.lpRv.setAdapter(lpRecyclerViewAdapter);
+        loadData(lpRecyclerViewAdapter.getPageStartNum());
         binding.lpRv.addOnItemTouchListener(new SingleItemClickListener(binding.lpRv, new SingleItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -123,19 +102,30 @@ public class MainFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void loadData() {
-        mRVData = new ArrayList<>();
-        DataEntry dataEntry = new DataEntry();
-        dataEntry.setName("lipeng");
-        mRVData.add(dataEntry);
-        mRVData.add(dataEntry);
-        mRVData.add(dataEntry);
-        mRVData.add(dataEntry);
-        mRVData.add(dataEntry);
-        mRVData.add(dataEntry);
-        mRVData.add(dataEntry);
-        mRVData.add(dataEntry);
-        mRVData.add(dataEntry);
+    private void loadData(final int pageIndex) {
+        // TODO: 16/11/26 数据是否这样更新有待优化
+        Log.d(LPConstants.TAG, "loadData: start!");
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(LPConstants.TAG, "loadData: success!");
+                boolean result = true;
+                String jsonStr = ServerData.getListData(pageIndex);
+                if (TextUtils.isEmpty(jsonStr)) {
+                    result = false;
+                }
+                Log.d(LPConstants.TAG, "recyclerview is loading more ? " + lpRecyclerViewAdapter.isLoadingMore());
+                if (result) {
+                    ServerDataEntry serverData = new Gson().fromJson(jsonStr, ServerDataEntry.class);
+                    lpRecyclerViewAdapter.loadDataSuccess(serverData.getData(), serverData.getPageCount());
+                } else {
+                    Toast.makeText(getActivity(), "获取数据失败，请重试！", Toast.LENGTH_SHORT).show();
+                    lpRecyclerViewAdapter.loadDataFailed();
+                }
+
+            }
+        }, 2000);
+
     }
 
 }
