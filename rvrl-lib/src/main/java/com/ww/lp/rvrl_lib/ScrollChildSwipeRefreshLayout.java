@@ -1,4 +1,4 @@
-package cc.lkme.rvrl;
+package com.ww.lp.rvrl_lib;
 
 import android.content.Context;
 import android.support.v4.view.ViewCompat;

@@ -1,9 +1,11 @@
-package cc.lkme.rvrl;
+package com.ww.lp.rvrl_lib;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+
+import static com.ww.lp.rvrl_lib.LPRecyclerViewAdapter.TYPE_ITEM;
 
 /**
  * Created by LinkedME06 on 16/11/12.
@@ -11,8 +13,6 @@ import android.view.View;
 
 public class SingleItemClickListener implements RecyclerView.OnItemTouchListener {
 
-    public static final int VIEW_ITEM = 0;
-    public static final int VIEW_PROG = 1;
 
     private OnItemClickListener clickListener;
     private GestureDetector gestureDetector;
@@ -32,8 +32,12 @@ public class SingleItemClickListener implements RecyclerView.OnItemTouchListener
                     public boolean onSingleTapUp(MotionEvent e) {
                         View childView = recyclerView.findChildViewUnder(e.getX(), e.getY());
                         if (childView != null && clickListener != null) {
-                            if (recyclerView.getChildViewHolder(childView).getItemViewType() == VIEW_ITEM) {
-                                clickListener.onItemClick(childView, recyclerView.getChildAdapterPosition(childView));
+                            if (recyclerView.getChildViewHolder(childView).getItemViewType() == TYPE_ITEM) {
+                                int actualPostion = recyclerView.getChildAdapterPosition(childView);
+                                if (((LPRecyclerViewAdapter)recyclerView.getAdapter()).getmHeaderBinding() != null) {
+                                    actualPostion -= 1;
+                                }
+                                clickListener.onItemClick(childView, actualPostion);
                             }
                         }
                         return true;

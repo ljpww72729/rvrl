@@ -1,0 +1,30 @@
+ext {
+    //仓库名称
+    repositoryName = 'RecyclerViewRefreshLoadMore'
+    //projectName 就是packageName
+    projectName = 'rvrl'
+    projectDesc = 'RecyclerView下拉刷新上拉加载更多'
+
+    githubUrl = 'https://github.com/ljpww72729/rvrl'
+
+    //maven相关信息
+    //Sonatype账号填写的Group Id
+    mavenGroup = 'com.github.ljpww72729'
+    //projectName不能与该项名称重复,否则虽然上传成功,
+    //但是在使用编译的时候会提示找不到jar包,可是明明pom文件中定义的是arr包
+    //如果非要与projectName相同,则引用的依赖库后面需要添加@arr(不建议此方式)
+    mavenArtifactId = 'rvrl-lib'
+    mavenVersion = '1.0.2'
+
+    //组织名称,即Bintray账号组织名称,全部为小写
+    bintrayOrg = 'ljpww72729'
+
+    //开发者Bintray账号的相关信息
+    developerId = 'ljpww72729'
+    developerName = 'lp'
+    developerEmail = 'ljpww72729@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}

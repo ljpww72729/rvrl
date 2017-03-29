@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by LinkedME06 on 16/11/10.
  */
 
-public class DataEntry implements Parcelable {
+public class ListDataEntry implements Parcelable {
 
     public String getName() {
         return name;
@@ -29,22 +29,22 @@ public class DataEntry implements Parcelable {
         dest.writeString(this.name);
     }
 
-    public DataEntry() {
+    public ListDataEntry() {
     }
 
-    protected DataEntry(Parcel in) {
+    protected ListDataEntry(Parcel in) {
         this.name = in.readString();
     }
 
-    public static final Creator<DataEntry> CREATOR = new Creator<DataEntry>() {
+    public static final Creator<ListDataEntry> CREATOR = new Creator<ListDataEntry>() {
         @Override
-        public DataEntry createFromParcel(Parcel source) {
-            return new DataEntry(source);
+        public ListDataEntry createFromParcel(Parcel source) {
+            return new ListDataEntry(source);
         }
 
         @Override
-        public DataEntry[] newArray(int size) {
-            return new DataEntry[size];
+        public ListDataEntry[] newArray(int size) {
+            return new ListDataEntry[size];
         }
     };
 }

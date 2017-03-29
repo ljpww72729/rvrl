@@ -1,4 +1,4 @@
-package cc.lkme.rvrl;
+package com.ww.lp.rvrl_lib;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;

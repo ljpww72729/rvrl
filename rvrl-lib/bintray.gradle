@@ -1,0 +1,33 @@
+apply plugin: 'com.jfrog.bintray'
+apply from: 'constants.gradle'
+
+group = mavenGroup
+version = mavenVersion
+project.archivesBaseName = mavenArtifactId
+
+bintray {
+    //为了安全最好在gradle目录中的gradle.properties中配置BINTRAY_USER及BINTRAY_KEY,也可以配置到工程目录下的gradle.properties中
+    user = project.hasProperty('BINTRAY_USER_LP') ? project.getProperty('BINTRAY_USER_LP') : System.getenv('BINTRAY_USER_LP')
+    key = project.hasProperty('BINTRAY_KEY_LP') ? project.getProperty('BINTRAY_KEY_LP') : System.getenv('BINTRAY_KEY_LP')
+
+    configurations = [ 'archives' ]
+
+    //以下是Bintray账号的相关信息
+    pkg {
+        repo = repositoryName
+        name = projectName
+        userOrg = bintrayOrg
+        licenses = allLicenses
+        websiteUrl = githubUrl
+        vcsUrl = "${githubUrl}.git"
+        publish = true
+        version {
+            name = mavenVersion
+            released = new Date()
+            gpg {
+                sign = true //Determines whether to GPG sign the files. The default is false
+                passphrase = rootProject.hasProperty('GPG_PSD_LP') ? rootProject.getProperty('GPG_PSD_LP') : System.getenv('GPG_PSD_LP') //Optional. The passphrase for GPG signing'
+            }
+        }
+    }
+}
