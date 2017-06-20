@@ -1,14 +1,14 @@
-package cc.lkme.rvrl;
+package com.ljpww72729.rvrl;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
-import cc.lkme.rvrl.databinding.ActivityMainBinding;
+import com.ljpww72729.rvrl.databinding.ActivityMainBinding;
+
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

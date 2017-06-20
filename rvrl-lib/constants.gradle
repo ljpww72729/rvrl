@@ -14,7 +14,7 @@ ext {
     //但是在使用编译的时候会提示找不到jar包,可是明明pom文件中定义的是arr包
     //如果非要与projectName相同,则引用的依赖库后面需要添加@arr(不建议此方式)
     mavenArtifactId = 'rvrl-lib'
-    mavenVersion = '1.0.1'
+    mavenVersion = '1.0.2'
 
     //组织名称,即Bintray账号组织名称,全部为小写
     bintrayOrg = 'ljpww72729'

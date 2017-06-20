@@ -1,4 +1,4 @@
-package cc.lkme.rvrl;
+package com.ljpww72729.rvrl;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -19,6 +19,19 @@ public class ListDataEntry implements Parcelable {
 
     private String name;
 
+    public String getImg_url() {
+        return img_url;
+    }
+
+    public void setImg_url(String img_url) {
+        this.img_url = img_url;
+    }
+
+    private String img_url;
+
+    public ListDataEntry() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -27,13 +40,12 @@ public class ListDataEntry implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.name);
-    }
-
-    public ListDataEntry() {
+        dest.writeString(this.img_url);
     }
 
     protected ListDataEntry(Parcel in) {
         this.name = in.readString();
+        this.img_url = in.readString();
     }
 
     public static final Creator<ListDataEntry> CREATOR = new Creator<ListDataEntry>() {

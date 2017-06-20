@@ -1,4 +1,6 @@
-package cc.lkme.rvrl;
+package com.ljpww72729.rvrl;
+
+import com.google.gson.Gson;
 
 import com.google.gson.Gson;
 
@@ -15,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.ljpww72729.rvrl.databinding.MainFragBinding;
 import com.ww.lp.rvrl_lib.LPConstants;
 import com.ww.lp.rvrl_lib.LPRecyclerViewAdapter;
 import com.ww.lp.rvrl_lib.LPRefreshLoadListener;
@@ -23,7 +26,6 @@ import com.ww.lp.rvrl_lib.SingleItemClickListener;
 
 import java.util.ArrayList;
 
-import cc.lkme.rvrl.databinding.MainFragBinding;
 
 /**
  * Created by LinkedME06 on 16/11/10.
@@ -69,7 +71,7 @@ public class MainFragment extends Fragment {
         // specify an adapter (see also next example)
         mRVData = new ArrayList<>();
 //        lpRecyclerViewAdapter = new LPRecyclerViewAdapter<>(mRVData, R.layout.recycler_view_item, BR.lp_rv_item);
-        lpRecyclerViewAdapter = new LPRecyclerViewAdapter<>(mRVData, R.layout.recycler_view_item, cc.lkme.rvrl.BR.lp_rv_item, swipeRefreshLayout, binding.lpRv);
+        lpRecyclerViewAdapter = new LPRecyclerViewAdapter<>(mRVData, R.layout.recycler_view_item, com.ljpww72729.rvrl.BR.lp_rv_item, swipeRefreshLayout, binding.lpRv);
         lpRecyclerViewAdapter.setPageStartNum(0);
         lpRecyclerViewAdapter.setOnLoadMoreListener(new LPRefreshLoadListener.OnLoadMoreListener() {
             @Override
