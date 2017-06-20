@@ -458,7 +458,7 @@ public class LPRecyclerViewAdapter<E> extends RecyclerView.Adapter {
     }
 
     /**
-     * 数据加载成功
+     * 数据加载成功，此处的data必须是新的对象，不能是构造函数中的mRVData对象
      *
      * @param data      列表数据
      * @param pageCount 页数

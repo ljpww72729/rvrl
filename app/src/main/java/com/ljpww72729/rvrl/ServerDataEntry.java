@@ -1,4 +1,4 @@
-package cc.lkme.rvrl;
+package com.ljpww72729.rvrl;
 
 import android.os.Parcel;
 import android.os.Parcelable;
